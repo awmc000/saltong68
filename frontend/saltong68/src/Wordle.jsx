@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Guess from './Guess'
+import './Wordle.css'
 
-const apiAddress = ''
+const apiAddress = "http://127.0.0.1:8000"
 
 /**
  * Returns the colors of each letter in a user's guess.
  * @param {string} guess The user's guess at the word.
  * @param {string} word The actual word.
- * @returns 
+ * @returns 2D array of the form [ ['color', char]] ] where
+ * there are `guess.length` inner arrays corresponding to
+ * the chars in that string.
  */
 const colorGuess = (guess, word) => {
 
@@ -62,18 +65,22 @@ const getWord = (length) => {
   }
 }
 
-const getRandomWord = (length) => {
-
-}
-
 const Wordle = (props) => {
-  let [word, setWord] = useState(getWord(props.length))
+  let [word, setWord] = useState('loading...')
   let [guesses, setGuesses] = useState([])
   
+  useEffect(() => {
+    fetch(apiAddress + (props.length == 6 ? "/six" : "/eight"))
+      .then(response => response.json())
+      .then(data => setWord(data.word))
+      .catch(err => console.log(err.message))
+  }, [props.length])
+
   const makeGuess = (event) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    const guess = formData.get("nextGuess")
+    const guess = formData.get("nextGuess").toLowerCase().replace(/[^a-z]/gi, '')
+    
     if (guesses.length == props.length) {
       alert("You ran out of guesses.")
       return
@@ -92,11 +99,13 @@ const Wordle = (props) => {
         <label htmlFor="nextGuess">Enter guess:</label>
         <input id="nextGuess" type="text" name="nextGuess"></input>
       </form>
-      <table>
+      <div className={"guessCard card" + props.length}>
+      <table >
         <tbody>
           { Array.from(Array(props.length).keys()).map((i) => <Guess guess={colorGuess(guesses[i], word)}/>) }
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

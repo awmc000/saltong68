@@ -3,7 +3,7 @@ import './App.css'
 import Wordle from './Wordle'
 
 function App() {
-  const [length, setLength] = useState(8)
+  const [length, setLength] = useState(6)
 
   const handleClick = () => {
     setLength((length) => length === 6 ? 8 : 6)
