@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Guess from './Guess'
+import GuessForm from './GuessForm'
 import './Wordle.css'
 
 const apiAddress = "http://127.0.0.1:8000"
@@ -51,20 +52,6 @@ const colorGuess = (guess, word) => {
 	return colors
 }
 
-/**
- * Retrieves today's word for a given length from the API.
- * @param {number} length Length of word to retrieve. A 6-letter word will
- * be retrieved if == 6, if equal to any other integer an 8-letter word will
- * be retrieved. 
- */
-const getWord = (length) => {
-  if (length == 6) {
-    return "suliin"
-  } else {
-    return "abilidad"
-  }
-}
-
 const Wordle = (props) => {
   let [word, setWord] = useState('loading...')
   let [guesses, setGuesses] = useState([])
@@ -93,21 +80,23 @@ const Wordle = (props) => {
   }
 
   return (
-    <div className='card'>
-      <p>dev: word is {word}</p>
-      <form onSubmit={makeGuess}>
-        <label htmlFor="nextGuess">Enter guess:</label>
-        <input id="nextGuess" type="text" name="nextGuess"></input>
-      </form>
-      <div className={"guessCard card" + props.length}>
-      <table >
-        <tbody>
-          { Array.from(Array(props.length).keys()).map((i) => <Guess guess={colorGuess(guesses[i], word)}/>) }
-        </tbody>
-      </table>
+    <>
+      <div className='card'>
+        <p>dev: word is {word}</p>
+        {guesses.length < props.length && <GuessForm guessFunction = {makeGuess}/>}
+        
+        <div className={"guessCard card" + props.length}>
+          <table >
+            <tbody>
+              { Array.from(Array(props.length).keys()).map((i) => <Guess guess={colorGuess(guesses[i], word)}/>) }
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+      {(guesses[guesses.length-1] == word) && <span>You won! The correct word is {word}!</span>}
+      {(guesses.length == props.length && guesses[guesses.length-1] != word) && <span>You lost, better luck tomorrow! The correct word was {word}!</span>}
+    </>
   )
 }
 
-  export default Wordle
+export default Wordle
