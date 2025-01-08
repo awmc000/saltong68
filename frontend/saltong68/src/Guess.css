@@ -1,8 +1,29 @@
+@keyframes fadein{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 .letterCell {
     width: 30px;
     height: 30px;
     border-radius: 15px;
+    font-weight: 1000;
+    opacity: 0;
+    animation: none;
 }
+
+.delay1 { animation: fadein 0.5s ease-out 0.25s forwards; }
+.delay2 { animation: fadein 0.5s ease-out 0.5s  forwards; }
+.delay3 { animation: fadein 0.5s ease-out 0.75s forwards; }
+.delay4 { animation: fadein 0.5s ease-out 1s    forwards; }
+.delay5 { animation: fadein 0.5s ease-out 1.25s forwards; }
+.delay6 { animation: fadein 0.5s ease-out 1.5s  forwards; }
+.delay7 { animation: fadein 0.5s ease-out 1.75s forwards; }
+.delay8 { animation: fadein 0.5s ease-out 2s    forwards; }
 
 .greenLetter {
     background-color: rgb(32, 178, 76);

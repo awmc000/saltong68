@@ -2,13 +2,12 @@ import './Guess.css'
 
 const Guess = (props) => {
 
-  console.log(props.guess)
-
   const drawGuess = () => {
     let elements = []
+    let i = 1
 
     for (const ltr of props.guess) {
-      elements.push(<td className={"letterCell " + ltr[0]}>{ltr[1]}</td>)
+      elements.push(<td key={`${ltr[0]}-${i}`} className={"letterCell " + ltr[0] + " delay" + i++}>{ltr[1]}</td>)
     }
     return elements
   }

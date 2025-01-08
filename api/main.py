@@ -48,3 +48,8 @@ def eight():
 @app.get("/rand/{length}")
 def random_word(length: int):
     return {"todo": sixWords[random.randint(0, len(sixWords)-1)] if length == 6 else eightWords[random.randint(0, len(eightWords) - 1)]}
+
+# Check if a word is in the dictionary
+@app.get("/isword/{word}")
+def is_word(word: str):
+    return {"isword": word in sixWords or word in eightWords}

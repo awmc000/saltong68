@@ -19,6 +19,9 @@ const colorGuess = (guess, word) => {
     return "undef"
   }
 
+  guess = guess.toUpperCase()
+  word = word.toUpperCase()
+
   // Create a map of each letter to its quantity in the word.
   let letters = new Map()
 
@@ -63,38 +66,56 @@ const Wordle = (props) => {
       .catch(err => console.log(err.message))
   }, [props.length])
 
-  const makeGuess = (event) => {
+  const makeGuess = async (event) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const guess = formData.get("nextGuess").toLowerCase().replace(/[^a-z]/gi, '')
-    
+
     if (guesses.length == props.length) {
       alert("You ran out of guesses.")
       return
     }
-    if (guess.length == props.length) {
-      setGuesses(prev => [...prev, guess])
-    } else {
+
+    if (guess.length != props.length) {
       alert("Enter a " + props.length + "-letter word.")
+      return
+    }
+
+    try {
+      const response = await fetch(apiAddress + "/isword/" + guess)
+      const data = await response.json()
+
+      if (data.isword) {
+        setGuesses(prev => [...prev, guess])
+      } else {
+        alert("Not a word!")
+      }
+    } catch (e) {
+      console.log(e.message)
     }
   }
 
   return (
     <>
       <div className='card'>
-        <p>dev: word is {word}</p>
+        <code>dev: word is {word}</code>
+        
         {guesses.length < props.length && <GuessForm guessFunction = {makeGuess}/>}
+        
+        <br></br>
         
         <div className={"guessCard card" + props.length}>
           <table >
             <tbody>
-              { Array.from(Array(props.length).keys()).map((i) => <Guess guess={colorGuess(guesses[i], word)}/>) }
+              { Array.from(Array(props.length).keys()).map((i) => <Guess key={"guess" + i} guess={colorGuess(guesses[i], word)}/>) }
             </tbody>
           </table>
         </div>
       </div>
+      
       {(guesses[guesses.length-1] == word) && <span>You won! The correct word is {word}!</span>}
       {(guesses.length == props.length && guesses[guesses.length-1] != word) && <span>You lost, better luck tomorrow! The correct word was {word}!</span>}
+    
     </>
   )
 }
