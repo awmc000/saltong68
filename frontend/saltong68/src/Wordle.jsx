@@ -103,6 +103,10 @@ const Wordle = (props) => {
         {guesses.length < props.length && <GuessForm guessFunction = {makeGuess}/>}
         
         <br></br>
+
+        {(guesses[guesses.length-1] == word) && <span>You won! The correct word is {word}!</span>}
+        {(guesses.length == props.length && guesses[guesses.length-1] != word) && <span>You lost, better luck tomorrow! The correct word was {word}!</span>}
+
         
         <div className={"guessCard card" + props.length}>
           <table >
@@ -111,11 +115,7 @@ const Wordle = (props) => {
             </tbody>
           </table>
         </div>
-      </div>
-      
-      {(guesses[guesses.length-1] == word) && <span>You won! The correct word is {word}!</span>}
-      {(guesses.length == props.length && guesses[guesses.length-1] != word) && <span>You lost, better luck tomorrow! The correct word was {word}!</span>}
-    
+      </div>    
     </>
   )
 }
