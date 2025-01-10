@@ -7,7 +7,6 @@ function App() {
 
   const handleClick = () => {
     setLength((length) => length === 6 ? 8 : 6)
-    window.location.reload()
   }
 
   return (
