@@ -21,7 +21,7 @@ function App() {
       <br></br>
 
       <small>
-        Made with love by <a href="http://amccolm.codes">amccolm.codes</a> in January 2025.
+        Made with React, FastAPI and PostgreSQL by <a href="http://amccolm.codes">amccolm.codes</a> in January 2025.
       </small>
     </>
   )
