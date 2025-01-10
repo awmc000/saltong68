@@ -15,9 +15,12 @@ const apiAddress = "http://127.0.0.1:8000"
  */
 const colorGuess = (guess, word) => {
 
-  if (guess === undefined) {
+  if (guess === undefined || word === undefined) {
     return "undef"
   }
+
+  console.log('word follows')
+  console.log(['word', word])
 
   guess = guess.toUpperCase()
   word = word.toUpperCase()
@@ -111,7 +114,7 @@ const Wordle = (props) => {
         <div className={"guessCard card" + props.length}>
           <table >
             <tbody>
-              { Array.from(Array(props.length).keys()).map((i) => <Guess key={"guess" + i} guess={colorGuess(guesses[i], word)}/>) }
+              { Array.from(Array(props.length).keys()).map((i) => <Guess key={"guess" + i} guess={colorGuess(guesses[i], word[0])}/>) }
             </tbody>
           </table>
         </div>
