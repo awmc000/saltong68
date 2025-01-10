@@ -137,4 +137,5 @@ def is_word(word: str):
         WHERE word LIKE '{word}'
         '''
     )
-    return {"isword": 1 in cur.fetchone()}
+    res = cur.fetchone()
+    return {"isword": res is not None and 1 in res}
