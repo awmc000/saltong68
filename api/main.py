@@ -45,7 +45,8 @@ def create_table():
 origins = [
     "http://localhost",
     "http://localhost:5173",
-    "localhost:5173"
+    "localhost:5173",
+    "*" #TODO: remove
 ]
 
 app.add_middleware(
