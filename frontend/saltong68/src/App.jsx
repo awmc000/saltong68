@@ -16,6 +16,13 @@ function App() {
       <button onClick={handleClick}>
         Switch to {length === 6 ? 8 : 6}-letter words
       </button>
+
+      <br></br>
+      <br></br>
+
+      <small>
+        Made with love by <a href="http://amccolm.codes">amccolm.codes</a> in January 2025.
+      </small>
     </>
   )
 }
