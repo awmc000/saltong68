@@ -102,9 +102,7 @@ const Wordle = (props) => {
     <>
       {(guesses[guesses.length-1] == word) && <span>You won! The correct word is {word}!</span>}
       {(guesses.length == props.length && guesses[guesses.length-1] != word) && <span>You lost, better luck tomorrow! The correct word was {word}!</span>}
-      <div className='card'>
-        <code>dev: word is {word}</code>
-        
+      <div className='card'>        
         {guesses.length < props.length && <GuessForm guessFunction = {makeGuess}/>}
         
         <br></br>
