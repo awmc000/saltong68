@@ -3,7 +3,7 @@ import Guess from './Guess'
 import GuessForm from './GuessForm'
 import './Wordle.css'
 
-const apiAddress = "http://127.0.0.1:8000"
+const apiAddress = "https://saltong68-api.vercel.app"
 
 /**
  * Returns the colors of each letter in a user's guess.
