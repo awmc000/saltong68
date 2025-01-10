@@ -7,17 +7,16 @@ function App() {
 
   const handleClick = () => {
     setLength((length) => length === 6 ? 8 : 6)
+    window.location.reload()
   }
 
   return (
     <>
       <h1>saltong68</h1>
-      <div className="card">
-        <button onClick={handleClick}>
-          length is {length}
-        </button>
-      </div>
       <Wordle length={length}/>
+      <button onClick={handleClick}>
+        Switch to {length === 6 ? 8 : 6}-letter words
+      </button>
     </>
   )
 }
