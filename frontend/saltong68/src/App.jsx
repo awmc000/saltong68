@@ -11,10 +11,10 @@ function App() {
 
   return (
     <>
-      <h1>saltong68</h1>
+      <h1>🇵🇭saltong68</h1>
       <Wordle length={length}/>
       <button onClick={handleClick}>
-        Switch to {length === 6 ? 8 : 6}-letter words
+        🔄 To {length === 6 ? 8 : 6}-letter words
       </button>
 
       <br></br>

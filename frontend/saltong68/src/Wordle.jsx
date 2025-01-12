@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import Guess from './Guess'
 import GuessForm from './GuessForm'
+import HelpBox from './HelpBox'
 import './Wordle.css'
 
-const apiAddress = "https://saltong68-api.vercel.app"
 
 /**
  * Returns the colors of each letter in a user's guess.
@@ -62,11 +62,23 @@ const Wordle = (props) => {
   let [word, setWord] = useState('loading...')
   let [guesses, setGuesses] = useState([])
   
+  const apiAddress = "https://saltong68-api.vercel.app"
+
+  /*
+   * When switching length, fetch appropriate word from API
+   */
   useEffect(() => {
     fetch(apiAddress + (props.length == 6 ? "/six" : "/eight"))
       .then(response => response.json())
       .then(data => setWord(data.word))
       .catch(err => console.log(err.message))
+  }, [props.length])
+
+  /*
+   * Clear the guesses when the player switches length.
+   */
+  useEffect(() => {
+    setGuesses([])
   }, [props.length])
 
   const makeGuess = async (event) => {
@@ -102,13 +114,26 @@ const Wordle = (props) => {
     <>
       {(guesses[guesses.length-1] == word) && <span>You won! The correct word is {word}!</span>}
       {(guesses.length == props.length && guesses[guesses.length-1] != word) && <span>You lost, better luck tomorrow! The correct word was {word}!</span>}
-      <div className='card'>        
+      <HelpBox openMessage="❓See Help" closeMessage = "❓Hide Help">
+        <ul>
+          <li>
+            Guess the 6 or 8 letter word by typing your guess in below, then hitting
+            "Enter" or the "Guess" button.
+          </li>
+          <li>
+            Every 24 hours a different word is selected
+            for each length.
+          </li>
+          <li>
+            Switching mode or refreshing will clear your guesses.
+          </li>
+        </ul>
+      </HelpBox>
+      <div className='card'>
         {guesses.length < props.length && <GuessForm guessFunction = {makeGuess}/>}
         
         <br></br>
 
-
-        
         <div className={"guessCard card" + props.length}>
           <table >
             <tbody>

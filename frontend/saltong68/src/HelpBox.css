@@ -1,0 +1,19 @@
+/* 
+.outerHelpBox {
+}
+ */
+.innerHelpBox {
+    text-align: left;
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 15px;
+    margin-inline: auto;
+    width: 190px;
+    background-color: rgb(30, 60, 80);
+}
+
+ul {
+    padding-top: 0;
+    padding-left: 10px;
+    margin: 0;
+}
