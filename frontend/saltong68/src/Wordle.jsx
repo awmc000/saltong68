@@ -87,12 +87,12 @@ const Wordle = (props) => {
     const guess = formData.get("nextGuess").toLowerCase().replace(/[^a-z]/gi, '')
 
     if (guesses.length == props.length) {
-      alert("You ran out of guesses.")
+      props.toastFunction("You ran out of guesses.")
       return
     }
 
     if (guess.length != props.length) {
-      alert("Enter a " + props.length + "-letter word.")
+      props.toastFunction("Enter a " + props.length + "-letter word.")
       return
     }
 
@@ -103,7 +103,7 @@ const Wordle = (props) => {
       if (data.isword) {
         setGuesses(prev => [...prev, guess])
       } else {
-        alert("Not a word!")
+        props.toastFunction("Not a word or not found in dictionary!")
       }
     } catch (e) {
       console.log(e.message)
