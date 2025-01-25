@@ -44,14 +44,13 @@ const colorGuess = (guess, word) => {
 
 		if (word[i] == c) {
 			colors = [...colors, ['greenLetter', c]]
-		}
-		else if (letters.has(c) && letters.get(c) > 0) {
+		} else if (letters.has(c) && letters.get(c) > 0) {
 			colors = [...colors, ['yellowLetter', c]]
-		}
-		else {
+		} else {
 			colors = [...colors, ['redLetter', c]]
 		}
-		if (letters.has(c)) {
+		
+    if (letters.has(c)) {
 			letters.set(c, letters.get(c) - 1)
 		}
 	}
@@ -85,6 +84,11 @@ const Wordle = (props) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     const guess = formData.get("nextGuess").toLowerCase().replace(/[^a-z]/gi, '')
+
+    if (guesses.includes(guess)) {
+      props.toastFunction("You already entered that word!")
+      return
+    }
 
     if (guesses.length == props.length) {
       props.toastFunction("You ran out of guesses.")

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import './App.css'
-import Wordle from './Wordle'
 import { ToastContainer, toast } from 'react-toastify'
+import Wordle from './Wordle'
+import './App.css'
 
 function App() {
   const [length, setLength] = useState(6)
@@ -11,10 +11,7 @@ function App() {
   }
 
   const notify = (msg) => {
-    toast(msg, {
-      closeButton: true,
-      className: "errorToast"
-    })
+    toast.error(msg)
   }
 
   return (
@@ -29,7 +26,7 @@ function App() {
       <br></br>
 
       <small>
-        Made with React, FastAPI and PostgreSQL by <a href="http://amccolm.codes">amccolm.codes</a> in January 2025.
+        Made by <a href="http://amccolm.codes">amccolm.codes</a> in January 2025.
       </small>
 
       <ToastContainer />
