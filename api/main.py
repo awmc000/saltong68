@@ -14,12 +14,48 @@ dbConnection = psycopg2.connect(
     host="ep-odd-paper-a6qfm216-pooler.us-west-2.aws.neon.tech"
 )
 
+def connect():
+    '''
+    Reconnects to the DB, updating the global connection variable.
+    '''
+    global dbConnection
+    dbConnection = psycopg2.connect(
+        dbname="neondb",
+        user="neondb_owner",
+        password="ZA4VqJ8lFRvu",
+        host="ep-odd-paper-a6qfm216-pooler.us-west-2.aws.neon.tech"
+    )
+
+def close_connection():
+    '''
+    Closes the global DB connection.
+    '''
+    dbConnection.close()
+
+def get_cursor():
+    '''
+    Creates a connection to return a cursor, re-trying for up to 10 seconds if it fails.
+    '''
+    attempts = 0
+    while True:
+        try:
+            connect()
+            cur = dbConnection.cursor()
+            return cur
+        except psycopg2.InterfaceError:
+            print('db connection failed')
+            close_connection()
+        time.sleep(1)
+        attempts += 1
+        if attempts == 10:
+            return None
+
 def create_table():
     '''
     For interactive shell use. Creates the `words` table only if it does
     not exist and prints the result of a check of whether it exists.
     '''
-    cursor = dbConnection.cursor()
+    cursor = get_cursor()
     
     cursor.execute(
         '''
@@ -41,12 +77,13 @@ def create_table():
     table_exists = cursor.fetchone()
     
     print(f'Table exists: {table_exists}')
+    close_connection()
 
 origins = [
     "http://localhost",
     "http://localhost:5173",
     "localhost:5173",
-    "*" #TODO: remove
+    "*" #TODO: remove, allow access from saltong68.vercel.app
 ]
 
 app.add_middleware(
@@ -65,28 +102,21 @@ def insert_words():
     sixWords = open('six.txt', 'r').read().split('\n')
     eightWords = open('eight.txt', 'r').read().split('\n')
 
-    cursor = dbConnection.cursor()
+    cursor = get_cursor()
 
     for word in chain(sixWords, eightWords):
         print(word)
         cursor.execute(f"INSERT INTO words (word) VALUES ('{word}')")
         dbConnection.commit()
-
-# Selects an element determined by current date
-def selectByDate(arr):
-    date_str = time.strftime('%Y%m%d')
-    date_num = int(date_str)
-    
-    hash_value = date_num * 2654435761
-    
-    index = hash_value % len(arr)
-    
-    return arr[index]
+    close_connection()
 
 # 6 letter word target
 @app.get("/six")
 def six():
-    cur = dbConnection.cursor()
+    '''
+    API target which returns the 6-letter word of the day.
+    '''
+    cur = get_cursor()
     cur.execute(
         '''
         SELECT word
@@ -97,12 +127,16 @@ def six():
         '''
     )
     word = cur.fetchone()
+    close_connection()
     return {"word": word}
 
 # 8 letter word target
 @app.get("/eight")
 def eight():
-    cur = dbConnection.cursor()
+    '''
+    API target which returns the 8-letter word of the day.
+    '''
+    cur = get_cursor()
     cur.execute(
         '''
         SELECT word
@@ -113,23 +147,33 @@ def eight():
         '''
     )
     word = cur.fetchone()
+    close_connection()
     return {"word": word}
 
 # Random word target with length parameter
 @app.get("/rand/{length}")
 def random_word(length: int):
+    '''
+    API target which returns a random word of a given length.
+    NOT ready to use!
+    '''
     query = f'''
     SELECT word FROM words WHERE LENGTH(word) = {length} ORDER BY RANDOM() LIMIT 1;
     '''
-    cur = dbConnection.cursor()
+    cur = get_cursor()
     cur.execute(query)
     word = cur.fetchone()
+    close_connection()
     return {"word": word}
 
 # Check if a word is in the dictionary
 @app.get("/isword/{word}")
 def is_word(word: str):
-    cur = dbConnection.cursor()
+    '''
+    API target which returns `{"word": true}` if it is in the dictionary,
+    and `{"word": false}` otherwise.
+    '''
+    cur = get_cursor()
     cur.execute(
         f'''
         SELECT 1
@@ -138,4 +182,5 @@ def is_word(word: str):
         '''
     )
     res = cur.fetchone()
+    close_connection()
     return {"isword": res is not None and 1 in res}
