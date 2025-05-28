@@ -4,14 +4,15 @@ from itertools import chain
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
+import os
 
 app = FastAPI()
 
 dbConnection = psycopg2.connect(
     dbname="neondb",
     user="neondb_owner",
-    password="ZA4VqJ8lFRvu",
-    host="ep-odd-paper-a6qfm216-pooler.us-west-2.aws.neon.tech"
+    password=os.getenv('SALTONG_DB_PASS'),
+    host=os.getenv('SALTONG_DB_HOST')
 )
 
 def connect():
