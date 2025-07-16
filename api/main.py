@@ -1,5 +1,6 @@
 import random
 import time
+import os
 from itertools import chain
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,10 +9,10 @@ import psycopg2
 app = FastAPI()
 
 dbConnection = psycopg2.connect(
-    dbname="neondb",
-    user="neondb_owner",
-    password="ZA4VqJ8lFRvu",
-    host="ep-odd-paper-a6qfm216-pooler.us-west-2.aws.neon.tech"
+    dbname=os.getenv("SALTONG_DB_NAME"),
+    user=os.getenv("SALTONG_DB_USER"),
+    password=os.getenv("SALTONG_DB_PASS"),
+    host=os.getenv("SALTONG_DB_HOST")
 )
 
 def connect():
@@ -20,10 +21,10 @@ def connect():
     '''
     global dbConnection
     dbConnection = psycopg2.connect(
-        dbname="neondb",
-        user="neondb_owner",
-        password="ZA4VqJ8lFRvu",
-        host="ep-odd-paper-a6qfm216-pooler.us-west-2.aws.neon.tech"
+        dbname=os.getenv("SALTONG_DB_NAME"),
+        user=os.getenv("SALTONG_DB_USER"),
+        password=os.getenv("SALTONG_DB_PASS"),
+        host=os.getenv("SALTONG_DB_HOST")
     )
 
 def close_connection():
