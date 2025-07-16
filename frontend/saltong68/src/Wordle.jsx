@@ -19,9 +19,6 @@ const colorGuess = (guess, word) => {
     return "undef"
   }
 
-  console.log('word follows')
-  console.log(['word', word])
-
   guess = guess.toUpperCase()
   word = word.toUpperCase()
 
