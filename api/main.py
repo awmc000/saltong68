@@ -85,7 +85,8 @@ origins = [
     "http://localhost",
     "http://localhost:5173",
     "localhost:5173",
-    "*" #TODO: remove, allow access from saltong68.vercel.app
+    "https://saltong68.vercel.app/",
+    # "*" #TODO: remove, allow access from saltong68.vercel.app
 ]
 
 app.add_middleware(
